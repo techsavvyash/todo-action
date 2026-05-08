@@ -2,9 +2,11 @@ import path from "node:path";
 import Go from "tree-sitter-go";
 import JavaScript from "tree-sitter-javascript";
 import Python from "tree-sitter-python";
-import { tsx, typescript } from "tree-sitter-typescript";
+import TypeScriptParsers from "tree-sitter-typescript";
 import type { Language } from "tree-sitter";
 import type { SupportedLanguage } from "./findings.js";
+
+const { tsx, typescript } = TypeScriptParsers;
 
 export interface LanguageDefinition {
   id: SupportedLanguage;

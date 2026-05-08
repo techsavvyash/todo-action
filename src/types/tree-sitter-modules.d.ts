@@ -46,6 +46,9 @@ declare module "tree-sitter-python" {
 
 declare module "tree-sitter-typescript" {
   import type { Language } from "tree-sitter";
-  export const typescript: Language;
-  export const tsx: Language;
+  const languages: {
+    tsx: Language;
+    typescript: Language;
+  };
+  export = languages;
 }
