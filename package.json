@@ -9,7 +9,7 @@
     "todo"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "GPT Codex 5.5 with supervision from Yash Mittal (@techsavvyash)",
   "type": "module",
   "main": "lib/action/main.js",
   "scripts": {
