@@ -30,15 +30,29 @@ jobs:
       - name: Run checks
         run: npm run all
 
-  action-smoke:
+  action-dry-run:
     runs-on: ubuntu-latest
     needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run action in dry-run mode
+        uses: ./
+        with:
+          github-token: ${{ github.token }}
+          dry-run: "true"
+          dedupe: "false"
+
+  action-issue-dogfood:
+    runs-on: ubuntu-latest
+    needs: action-dry-run
     if: github.event_name == 'push'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run action
+      - name: Run action and create issues
         uses: ./
         with:
           github-token: ${{ github.token }}

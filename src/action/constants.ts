@@ -4,8 +4,9 @@ export const INPUTS = {
   dedupe: "dedupe",
   dryRun: "dry-run",
   exclude: "exclude",
-  failOnFindings: "fail-on-findings",
+  failOnTodos: "fail-on-todos",
   githubToken: "github-token",
+  issueBodyTemplate: "issue-body-template",
   labels: "labels",
   markers: "markers",
   mode: "mode",
@@ -13,6 +14,17 @@ export const INPUTS = {
 } as const;
 
 export const DEFAULTS = {
+  issueBodyTemplate: [
+    "A {{marker}} comment was introduced in the diff.",
+    "",
+    "File: `{{file}}`",
+    "Line: {{startLine}}",
+    "Language: {{language}}",
+    "",
+    "```",
+    "{{commentText}}",
+    "```",
+  ].join("\n"),
   markers: "TODO,FIXME",
   mode: "auto",
   titlePrefix: "TODO:",

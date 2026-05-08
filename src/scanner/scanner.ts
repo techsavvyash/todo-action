@@ -1,7 +1,7 @@
-import { addedLinesByFile, type PatchFile } from "./diff.js";
-import { fingerprintFinding, type TodoFinding } from "./findings.js";
-import { resolveLanguage } from "./languages.js";
-import { collectCommentNodes, parseContent, type SyntaxNode } from "./treeSitter.js";
+import { addedLinesByFile, type PatchFile } from "../diff/patch.js";
+import { resolveLanguage } from "../parsers/languages.js";
+import { collectCommentNodes, parseContent, type SyntaxNode } from "../parsers/treeSitter.js";
+import { fingerprintTodo, type TodoComment } from "../todos/todo.js";
 
 export interface ScanOptions {
   markers?: string[];
@@ -10,12 +10,12 @@ export interface ScanOptions {
 
 const DEFAULT_MARKERS = ["TODO", "FIXME"];
 
-export function scanChangedFiles(files: PatchFile[], options: ScanOptions = {}): TodoFinding[] {
+export function scanChangedFiles(files: PatchFile[], options: ScanOptions = {}): TodoComment[] {
   const addedLineMap = addedLinesByFile(files);
   const markers = options.markers?.length ? options.markers : DEFAULT_MARKERS;
   const markerPattern = buildMarkerPattern(markers);
   const exclude = options.exclude?.filter(Boolean) ?? [];
-  const findings: TodoFinding[] = [];
+  const todoComments: TodoComment[] = [];
 
   for (const file of files) {
     if (!file.content || exclude.some((part) => file.path.includes(part))) {
@@ -55,14 +55,14 @@ export function scanChangedFiles(files: PatchFile[], options: ScanOptions = {}):
         commentText: normalizedComment,
       };
 
-      findings.push({
+      todoComments.push({
         ...withoutFingerprint,
-        fingerprint: fingerprintFinding(withoutFingerprint),
+        fingerprint: fingerprintTodo(withoutFingerprint),
       });
     }
   }
 
-  return findings;
+  return todoComments;
 }
 
 function nodeIntersectsAddedLines(node: SyntaxNode, addedLines: Set<number>): boolean {

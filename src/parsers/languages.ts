@@ -4,7 +4,7 @@ import JavaScript from "tree-sitter-javascript";
 import Python from "tree-sitter-python";
 import TypeScriptParsers from "tree-sitter-typescript";
 import type { Language } from "tree-sitter";
-import type { SupportedLanguage } from "./findings.js";
+import type { SupportedLanguage } from "../todos/todo.js";
 
 const { tsx, typescript } = TypeScriptParsers;
 

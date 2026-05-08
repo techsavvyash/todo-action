@@ -11,9 +11,10 @@ export interface ActionConfig {
   assignees: string[];
   markers: string[];
   titlePrefix: string;
+  issueBodyTemplate: string;
   dryRun: boolean;
   dedupe: boolean;
-  failOnFindings: boolean;
+  failOnTodos: boolean;
   exclude: string[];
 }
 
@@ -26,9 +27,10 @@ export function readConfig(): ActionConfig {
     assignees: parseList(core.getInput(INPUTS.assignees)),
     markers: parseList(core.getInput(INPUTS.markers) || DEFAULTS.markers),
     titlePrefix: core.getInput(INPUTS.titlePrefix) || DEFAULTS.titlePrefix,
+    issueBodyTemplate: core.getInput(INPUTS.issueBodyTemplate) || DEFAULTS.issueBodyTemplate,
     dryRun: core.getBooleanInput(INPUTS.dryRun),
     dedupe: core.getBooleanInput(INPUTS.dedupe),
-    failOnFindings: core.getBooleanInput(INPUTS.failOnFindings),
+    failOnTodos: core.getBooleanInput(INPUTS.failOnTodos),
     exclude: parseList(core.getInput(INPUTS.exclude)),
   };
 }

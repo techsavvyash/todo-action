@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 
 export type SupportedLanguage = "go" | "javascript" | "typescript" | "python";
 
-export interface TodoFinding {
+export interface TodoComment {
   fingerprint: string;
   marker: string;
   text: string;
@@ -13,7 +13,7 @@ export interface TodoFinding {
   commentText: string;
 }
 
-export function fingerprintFinding(input: Omit<TodoFinding, "fingerprint">): string {
+export function fingerprintTodo(input: Omit<TodoComment, "fingerprint">): string {
   const stableParts = [
     input.file,
     input.language,

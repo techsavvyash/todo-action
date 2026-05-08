@@ -11,7 +11,7 @@ describe("scanChangedFiles", () => {
       "}",
     ].join("\n");
 
-    const findings = scanChangedFiles([
+    const todoComments = scanChangedFiles([
       {
         path: "src/example.ts",
         content,
@@ -26,8 +26,8 @@ describe("scanChangedFiles", () => {
       },
     ]);
 
-    expect(findings).toHaveLength(1);
-    expect(findings[0]).toMatchObject({
+    expect(todoComments).toHaveLength(1);
+    expect(todoComments[0]).toMatchObject({
       file: "src/example.ts",
       startLine: 3,
       marker: "TODO",
@@ -45,7 +45,7 @@ describe("scanChangedFiles", () => {
       "}",
     ].join("\n");
 
-    const findings = scanChangedFiles([
+    const todoComments = scanChangedFiles([
       {
         path: "src/example.js",
         content,
@@ -60,8 +60,8 @@ describe("scanChangedFiles", () => {
       },
     ]);
 
-    expect(findings).toHaveLength(1);
-    expect(findings[0]).toMatchObject({
+    expect(todoComments).toHaveLength(1);
+    expect(todoComments[0]).toMatchObject({
       file: "src/example.js",
       startLine: 3,
       marker: "TODO",
@@ -80,7 +80,7 @@ describe("scanChangedFiles", () => {
       "func main() {}",
     ].join("\n");
 
-    const findings = scanChangedFiles([
+    const todoComments = scanChangedFiles([
       {
         path: "main.go",
         content,
@@ -96,8 +96,8 @@ describe("scanChangedFiles", () => {
       },
     ]);
 
-    expect(findings).toHaveLength(1);
-    expect(findings[0]).toMatchObject({
+    expect(todoComments).toHaveLength(1);
+    expect(todoComments[0]).toMatchObject({
       file: "main.go",
       startLine: 3,
       endLine: 5,
@@ -115,7 +115,7 @@ describe("scanChangedFiles", () => {
       "    return value",
     ].join("\n");
 
-    const findings = scanChangedFiles([
+    const todoComments = scanChangedFiles([
       {
         path: "example.py",
         content,
@@ -129,8 +129,8 @@ describe("scanChangedFiles", () => {
       },
     ]);
 
-    expect(findings).toHaveLength(1);
-    expect(findings[0]).toMatchObject({
+    expect(todoComments).toHaveLength(1);
+    expect(todoComments[0]).toMatchObject({
       file: "example.py",
       startLine: 3,
       marker: "FIXME",
@@ -140,7 +140,7 @@ describe("scanChangedFiles", () => {
   });
 
   it("ignores unsupported files", () => {
-    const findings = scanChangedFiles([
+    const todoComments = scanChangedFiles([
       {
         path: "README.md",
         content: "<!-- TODO: ignored for v1 -->",
@@ -148,6 +148,6 @@ describe("scanChangedFiles", () => {
       },
     ]);
 
-    expect(findings).toEqual([]);
+    expect(todoComments).toEqual([]);
   });
 });

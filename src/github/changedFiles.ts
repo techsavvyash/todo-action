@@ -1,6 +1,6 @@
 import * as github from "@actions/github";
-import type { PatchFile } from "../core/diff.js";
-import type { ActionConfig } from "./config.js";
+import type { ActionConfig } from "../action/config.js";
+import type { PatchFile } from "../diff/patch.js";
 
 export type Octokit = ReturnType<typeof github.getOctokit>;
 

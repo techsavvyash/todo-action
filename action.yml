@@ -29,15 +29,28 @@ inputs:
     description: "Prefix used for generated issue titles."
     required: false
     default: "TODO:"
+  issue-body-template:
+    description: "Markdown template used for generated issue bodies."
+    required: false
+    default: |
+      A {{marker}} comment was introduced in the diff.
+
+      File: `{{file}}`
+      Line: {{startLine}}
+      Language: {{language}}
+
+      ```
+      {{commentText}}
+      ```
   dry-run:
-    description: "When true, logs TODO findings without creating issues."
+    description: "When true, logs TODO comments without creating issues."
     required: false
     default: "false"
   dedupe:
-    description: "When true, searches existing open issues for the finding fingerprint before creating a new issue."
+    description: "When true, searches existing open issues for the TODO fingerprint before creating a new issue."
     required: false
     default: "true"
-  fail-on-findings:
+  fail-on-todos:
     description: "When true, fails the workflow if any TODO comments are found."
     required: false
     default: "false"
@@ -80,7 +93,8 @@ runs:
         INPUT_MARKERS: ${{ inputs.markers }}
         INPUT_ASSIGNEES: ${{ inputs.assignees }}
         INPUT_TITLE-PREFIX: ${{ inputs.title-prefix }}
+        INPUT_ISSUE-BODY-TEMPLATE: ${{ inputs.issue-body-template }}
         INPUT_DRY-RUN: ${{ inputs.dry-run }}
         INPUT_DEDUPE: ${{ inputs.dedupe }}
-        INPUT_FAIL-ON-FINDINGS: ${{ inputs.fail-on-findings }}
+        INPUT_FAIL-ON-TODOS: ${{ inputs.fail-on-todos }}
         INPUT_EXCLUDE: ${{ inputs.exclude }}
