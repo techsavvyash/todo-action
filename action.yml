@@ -1,0 +1,86 @@
+name: "TODO Issue Creator"
+description: "Creates GitHub issues for TODO comments introduced by a pull request or commit diff."
+author: ""
+inputs:
+  github-token:
+    description: "Token used to read diffs and create issues."
+    required: true
+    default: "${{ github.token }}"
+  mode:
+    description: "Diff source: auto, pr, push, or commit."
+    required: false
+    default: "auto"
+  commit-sha:
+    description: "Commit SHA to inspect when mode is commit."
+    required: false
+  labels:
+    description: "Comma-separated labels to attach to created issues."
+    required: false
+    default: "todo"
+  markers:
+    description: "Comma-separated TODO markers to detect inside comments."
+    required: false
+    default: "TODO,FIXME"
+  assignees:
+    description: "Comma-separated assignees to attach to created issues."
+    required: false
+    default: ""
+  title-prefix:
+    description: "Prefix used for generated issue titles."
+    required: false
+    default: "TODO:"
+  dry-run:
+    description: "When true, logs TODO findings without creating issues."
+    required: false
+    default: "false"
+  dedupe:
+    description: "When true, searches existing open issues for the finding fingerprint before creating a new issue."
+    required: false
+    default: "true"
+  fail-on-findings:
+    description: "When true, fails the workflow if any TODO comments are found."
+    required: false
+    default: "false"
+  exclude:
+    description: "Comma-separated path substrings to exclude."
+    required: false
+    default: "node_modules,dist,lib"
+outputs:
+  todos-found:
+    description: "Number of TODO comments found in added diff lines."
+    value: "${{ steps.run.outputs.todos-found }}"
+  issues-created:
+    description: "Number of GitHub issues created."
+    value: "${{ steps.run.outputs.issues-created }}"
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "24"
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm ci
+    - name: Build action
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm run build
+    - name: Run TODO scanner
+      id: run
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: node lib/action/main.js
+      env:
+        INPUT_GITHUB-TOKEN: ${{ inputs.github-token }}
+        INPUT_MODE: ${{ inputs.mode }}
+        INPUT_COMMIT-SHA: ${{ inputs.commit-sha }}
+        INPUT_LABELS: ${{ inputs.labels }}
+        INPUT_MARKERS: ${{ inputs.markers }}
+        INPUT_ASSIGNEES: ${{ inputs.assignees }}
+        INPUT_TITLE-PREFIX: ${{ inputs.title-prefix }}
+        INPUT_DRY-RUN: ${{ inputs.dry-run }}
+        INPUT_DEDUPE: ${{ inputs.dedupe }}
+        INPUT_FAIL-ON-FINDINGS: ${{ inputs.fail-on-findings }}
+        INPUT_EXCLUDE: ${{ inputs.exclude }}

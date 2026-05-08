@@ -1,0 +1,42 @@
+{
+  "name": "todo-action",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GitHub Action that creates issues for TODO comments introduced in a commit or pull request diff.",
+  "keywords": [
+    "github-action",
+    "issues",
+    "todo"
+  ],
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "lib/action/main.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "oxlint src",
+    "format": "oxfmt --write src package.json tsconfig.json action.yml README.md",
+    "format:check": "oxfmt --check src package.json tsconfig.json action.yml README.md",
+    "test": "vitest run",
+    "all": "npm run lint && npm run build && npm run test && npm run format:check"
+  },
+  "dependencies": {
+    "@actions/core": "^3.0.1",
+    "@actions/github": "^9.1.1",
+    "tree-sitter": "0.21.1",
+    "tree-sitter-go": "0.21.2",
+    "tree-sitter-javascript": "0.21.4",
+    "tree-sitter-python": "0.21.0",
+    "tree-sitter-typescript": "0.21.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "oxfmt": "^0.48.0",
+    "oxlint": "^1.63.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  }
+}
